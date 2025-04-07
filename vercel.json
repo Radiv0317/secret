@@ -1,11 +1,6 @@
 {
-    "version": 2,
-    "builds": [
-      { "src": "api/log.js", "use": "@vercel/node" }
-    ],
-    "routes": [
-      { "src": "/api/log", "dest": "/api/log.js" },
-      { "src": "/public", "dest": "/public/index.html" }
+    "rewrites": [
+      { "source": "/", "destination": "/public/index.html" }
     ]
   }
   
