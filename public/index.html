@@ -233,25 +233,20 @@
     </div>
   </div>
   <script>
-    fetch("https://ipinfo.io/json?token=6447b620b1b0a1")
-      .then(res => res.json())
-      .then(data => {
-        const ip = data.ip || "N/A";
-        const location = `${data.city}, ${data.region}, ${data.country}`;
-        const userAgent = navigator.userAgent;
-        const device = navigator.platform;
-
-        fetch("/log", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            ip: ip,
-            location: location,
-            device: device,
-            userAgent: userAgent
-          })
-        });
+    fetch('https://api.ipify.org?format=json')
+    .then(res => res.json())
+    .then(data => {
+      fetch('/api/log', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ip: data.ip,
+          location: "Unknown",
+          device: navigator.platform,
+          userAgent: navigator.userAgent
+        })
       });
+    });
   </script>
 </body>
 </html>
