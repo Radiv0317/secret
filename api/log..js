@@ -1,9 +1,8 @@
-const fs = require('fs');
 const axios = require('axios');
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
-    return res.status(405).send('Method Not Allowed');
+    return res.status(405).json({ error: 'Method Not Allowed' });
   }
 
   const { ip = "N/A", location = "N/A", device = "N/A", userAgent = "N/A" } = req.body;
@@ -27,18 +26,15 @@ module.exports = async (req, res) => {
   };
 
   try {
-    const webhookUrl = process.env.DISCORD_WEBHOOK;
-
-    if (!webhookUrl) {
-      console.error("❌ DISCORD_WEBHOOK not defined!");
-      return res.status(500).json({ error: "Missing webhook" });
+    const webhook = process.env.DISCORD_WEBHOOK;
+    if (!webhook) {
+      return res.status(500).json({ error: 'Webhook not set in environment' });
     }
 
-    await axios.post(webhookUrl, embed);
-    console.log("✅ Sent to Discord");
-    res.status(200).json({ status: "ok" });
+    await axios.post(webhook, embed);
+    res.status(200).json({ status: 'ok' });
   } catch (err) {
-    console.error("❌ Error sending to Discord:", err.message);
-    res.status(500).json({ error: "Discord webhook error" });
+    console.error(err.message);
+    res.status(500).json({ error: 'Failed to send to Discord' });
   }
 };
