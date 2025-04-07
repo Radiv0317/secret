@@ -1,10 +1,9 @@
+const fs = require('fs');
 const axios = require('axios');
 
-const DISCORD_WEBHOOK = process.env.DISCORD_WEBHOOK;
-
-export default async function handler(req, res) {
+module.exports = async (req, res) => {
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+    return res.status(405).send('Method Not Allowed');
   }
 
   const { ip = "N/A", location = "N/A", device = "N/A", userAgent = "N/A" } = req.body;
@@ -16,23 +15,30 @@ export default async function handler(req, res) {
         title: "🌐 New Visitor Detected!",
         color: 3447003,
         fields: [
-          { name: "🕒 Time", value: time, inline: false },
-          { name: "📍 IP", value: ip, inline: true },
-          { name: "🌍 Location", value: location, inline: true },
-          { name: "💻 Device", value: device, inline: true },
-          { name: "🕵️ User Agent", value: userAgent.slice(0, 1024), inline: false }
+          { name: "🕒 Time", value: time },
+          { name: "📍 IP", value: ip },
+          { name: "🌍 Location", value: location },
+          { name: "💻 Device", value: device },
+          { name: "🕵️ User Agent", value: userAgent.slice(0, 1024) }
         ],
-        footer: {
-          text: "Visitor Logger by Vercel"
-        }
+        footer: { text: "Visitor Logger by Vercel" }
       }
     ]
   };
 
   try {
-    await axios.post(DISCORD_WEBHOOK, embed);
-    return res.status(200).json({ status: 'ok' });
+    const webhookUrl = process.env.DISCORD_WEBHOOK;
+
+    if (!webhookUrl) {
+      console.error("❌ DISCORD_WEBHOOK not defined!");
+      return res.status(500).json({ error: "Missing webhook" });
+    }
+
+    await axios.post(webhookUrl, embed);
+    console.log("✅ Sent to Discord");
+    res.status(200).json({ status: "ok" });
   } catch (err) {
-    return res.status(500).json({ status: 'error', message: err.message });
+    console.error("❌ Error sending to Discord:", err.message);
+    res.status(500).json({ error: "Discord webhook error" });
   }
-}
+};
