@@ -196,7 +196,7 @@
  
 
   <div class="clan">
-    <img src="/public/logo-tk.png tk.png" alt="Tojo-Kai Icon" class="clan-icon">
+    <img src="logo tk.png" alt="Tojo-Kai Icon" class="clan-icon">
 
     <h2>Tojo-Kai | 東城会</h2>
     <p class="clan-desc">
@@ -223,34 +223,34 @@
   <div class="gallery">
     
     <div class="background-gallery">
-      <img src="/public/pic1.png" />
-      <img src="/public/pic2.png" />
-      <img src="/public/pic3.png" />
-      <img src="/public/pic4.png" />
-      <img src="/public/pic5.png" />
-      <img src="/public/pic6.png" />
-      <img src="/public/pic7.png" alt="">
+      <img src="pic1.png" />
+      <img src="pic2.png" />
+      <img src="pic3.png" />
+      <img src="pic4.png" />
+      <img src="pic5.png" />
+      <img src="pic6.png" />
+      <img src="pic7.png" alt="">
     </div>
   </div>
-  <script>
-    fetch('https://api.ipify.org?format=json')
-      .then(res => res.json())
-      .then(data => {
-        fetch('/api/log', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            ip: data.ip,
-            location: "Unknown",
-            device: navigator.platform,
-            userAgent: navigator.userAgent
-          })
+<script>
+  fetch('https://api.ipify.org?format=json')
+    .then(res => res.json())
+    .then(data => {
+      fetch('/api/log', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ip: data.ip,
+          location: "Unknown",
+          device: navigator.platform,
+          userAgent: navigator.userAgent
         })
-        .then(res => res.json())
-        .then(console.log)
-        .catch(console.error);
-      });
-  </script>
-  
+      })
+      .then(res => res.json())
+      .then(console.log)
+      .catch(console.error);
+    });
+</script>
+
 </body>
 </html>
