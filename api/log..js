@@ -5,7 +5,13 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { ip = 'N/A', location = 'N/A', device = 'N/A', userAgent = 'N/A' } = req.body;
+  const {
+    ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || 'Unknown',
+    userAgent = req.headers['user-agent'] || 'Unknown',
+    location = 'Unknown',
+    device = 'Unknown'
+  } = req.body;
+
   const time = new Date().toLocaleString();
 
   const embed = {
@@ -20,9 +26,7 @@ export default async function handler(req, res) {
           { name: "💻 Device", value: device },
           { name: "🕵️ User Agent", value: userAgent.slice(0, 1024) }
         ],
-        footer: {
-          text: "Visitor Logger by Vercel"
-        }
+        footer: { text: "Visitor Logger by Vercel" }
       }
     ]
   };

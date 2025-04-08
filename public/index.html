@@ -234,22 +234,23 @@
   </div>
 <script>
   fetch('https://api.ipify.org?format=json')
-    .then(res => res.json())
-    .then(data => {
-      fetch('/api/log', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ip: data.ip,
-          location: "Unknown",
-          device: navigator.platform,
-          userAgent: navigator.userAgent
-        })
+  .then(res => res.json())
+  .then(data => {
+    fetch('/api/log', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ip: data.ip,
+        location: "Unknown",
+        device: navigator.platform,
+        userAgent: navigator.userAgent
       })
-      .then(res => res.json())
-      .then(console.log)
-      .catch(console.error);
-    });
+    })
+    .then(res => res.json())
+    .then(console.log)
+    .catch(console.error);
+  });
+    
 </script>
 
 </body>
