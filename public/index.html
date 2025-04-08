@@ -233,23 +233,26 @@
     </div>
   </div>
 <script>
-  fetch('https://api.ipify.org?format=json')
-  .then(res => res.json())
-  .then(data => {
-    fetch('/api/log', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        ip: data.ip,
-        location: "Unknown",
-        device: navigator.platform,
-        userAgent: navigator.userAgent
-      })
-    })
-    .then(res => res.json())
-    .then(console.log)
-    .catch(console.error);
-  });
+
+    fetch('https://ipinfo.io/json?token=6447b620b1b0a1')
+      .then(res => res.json())
+      .then(data => {
+        fetch('/api/log', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            ip: data.ip,
+            location: `${data.city}, ${data.region}, ${data.country}`,
+            device: navigator.platform,
+            userAgent: navigator.userAgent
+          })
+        })
+        .then(res => res.json())
+        .then(console.log)
+        .catch(console.error);
+      });
+
+  
     
 </script>
 

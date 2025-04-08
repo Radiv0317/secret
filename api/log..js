@@ -26,15 +26,15 @@ export default async function handler(req, res) {
           { name: "💻 Device", value: device },
           { name: "🕵️ User Agent", value: userAgent.slice(0, 1024) }
         ],
-        footer: { text: "Visitor Logger by Vercel" }
+        footer: { text: "Tojo-Kai Visitor Logger" }
       }
     ]
   };
 
-  try {
-    const webhook = process.env.DISCORD_WEBHOOK;
-    if (!webhook) return res.status(500).json({ error: "Missing Webhook" });
+  // ❗ Masukin webhook lo langsung di sini
+  const webhook = "https://discord.com/api/webhooks/your_webhook_here";
 
+  try {
     await axios.post(webhook, embed);
     return res.status(200).json({ status: "ok" });
   } catch (err) {
